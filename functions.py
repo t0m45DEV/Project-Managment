@@ -3,10 +3,15 @@ from tkinter import filedialog
 import tkinter as tk
 import io
 
+
 def init():
-    plen = io.open("plen.txt", "r")
-    readedplen = plen.readlines()
-    chooselanguage(readedplen)
+    defaultlanguage = io.open("Defaults/language.txt", "r")
+    readeddefaultlanguage = defaultlanguage.readlines()
+    chooselanguage(readeddefaultlanguage)
+
+    defaultcolor = io.open("Defaults/color.txt", "r")
+    readeddefaultcolor = defaultcolor.readlines()
+    variables.windowcolor = readeddefaultcolor[0].replace("\n", "")
 
     variables.root = tk.Tk()
     variables.root.title(variables.windowtitle)
@@ -43,8 +48,18 @@ def windowmenu():
     variables.filemenu = tk.Menu(variables.windowmenu, tearoff=0)
     variables.filemenu.add_command(label=variables.savetext,
         command=savetasklist)
+    variables.filemenu.add_command(label=variables.quicksavetext,
+        command=quicksavetasklist)
     variables.filemenu.add_command(label=variables.loadtext,
         command=loadtasklist)
+
+    variables.colormenu = tk.Menu(variables.windowmenu, tearoff=0)
+    variables.colormenu.add_command(label=variables.colorsnames[0],
+        command=lambda:changecolor(variables.colors[0]))
+    variables.colormenu.add_command(label=variables.colorsnames[1],
+        command=lambda:changecolor(variables.colors[1]))
+    variables.colormenu.add_command(label=variables.colorsnames[2],
+        command=lambda:changecolor(variables.colors[2]))
 
     variables.languagemenu = tk.Menu(variables.windowmenu, tearoff=0)
     variables.languagemenu.add_command(label=variables.espanishtext,
@@ -58,31 +73,62 @@ def windowmenu():
 
     variables.windowmenu.add_cascade(label=variables.filetext,
         menu=variables.filemenu)
+    variables.windowmenu.add_cascade(label=variables.colortext,
+        menu=variables.colormenu)
     variables.windowmenu.add_cascade(label=variables.languagetext,
         menu=variables.languagemenu)
     variables.windowmenu.add_cascade(label=variables.helptext,
         menu=variables.helpmenu)
 
+
 def changelanguage(language):
-    predeterminatelanguage(language)
-    variables.root.destroy()
-    init()
+    if predeterminatelanguage(language) == 0:
+        pass
+    else:
+        variables.root.destroy()
+        init()
 
 
 def predeterminatelanguage(language):
 
-    plen = io.open("plen.txt", "r+")
-    readedplen = plen.read()
+    bydefault = io.open("Defaults/language.txt", "r+")
+    readedbydefault = bydefault.read()
 
-    if readedplen == language:
-        pass
+    if language in readedbydefault:
+        return 0
 
     else:
-        plen.seek(0)
-        plen.truncate(0)
-        plen.write(language)
+        bydefault.seek(0)
+        bydefault.truncate(0)
+        bydefault.write(language)
+        return 1
 
-    plen.close()
+    bydefault.close()
+
+
+def changecolor(color):
+    if predeterminatecolor(color) == 0:
+        pass
+    else:
+        variables.root.destroy()
+        init()
+
+
+def predeterminatecolor(color):
+
+    bydefault = io.open("Defaults/color.txt", "r+")
+    readedbydefault = bydefault.read()
+
+    if color in readedbydefault:
+        return 0
+
+    else:
+        bydefault.seek(0)
+        bydefault.truncate(0)
+        bydefault.write(color)
+        return 1
+
+    bydefault.close()
 
 
 def aboutwindow():
@@ -140,6 +186,7 @@ def createbuttons():
     variables.erasebutton.grid(row=2, column=2,
         padx=variables.padx, pady=variables.pady)
 
+
 def deletetask():
     todo  = variables.todolistbox.curselection()
     doing = variables.doinglistbox.curselection()
@@ -159,6 +206,7 @@ def deletetask():
 
     else:
         messagebox.showwarning(variables.error03[0], variables.error03[1])
+
 
 def movetask():
     todo  = variables.todolistbox.curselection()
@@ -185,29 +233,36 @@ def movetask():
     else:
         messagebox.showwarning(variables.error04[0], variables.error04[1])
 
+
 def addtask(column):
-    if variables.entrytext.get() != "":
-        if column == 0:
-            variables.todolistbox.insert(tk.END, variables.entrytext.get())
-            variables.entrytext.set("")
-
-        if column == 1:
-            variables.doinglistbox.insert(tk.END, variables.entrytext.get())
-            variables.entrytext.set("")
-
-        if column == 2:
-            variables.donelistbox.insert(tk.END, variables.entrytext.get())
-            variables.entrytext.set("")
+    if "|" in variables.entrytext.get():
+        messagebox.showwarning(variables.error05[0], variables.error05[1])
 
     else:
-        messagebox.showwarning(variables.error01[0], variables.error01[1])
+        if variables.entrytext.get() != "":
+            if column == 0:
+                variables.todolistbox.insert(tk.END, variables.entrytext.get())
+                variables.entrytext.set("")
+
+            if column == 1:
+                variables.doinglistbox.insert(tk.END, variables.entrytext.get())
+                variables.entrytext.set("")
+
+            if column == 2:
+                variables.donelistbox.insert(tk.END, variables.entrytext.get())
+                variables.entrytext.set("")
+
+        else:
+            messagebox.showwarning(variables.error01[0], variables.error01[1])
 
 
 def savetasklist():
     try:
-        saveroute = filedialog.asksaveasfilename(title="Save as...",
-            filetypes=(("Text files", "*.txt"), ("All files", "*.*")))
+        saveroute = filedialog.asksaveasfilename(title=variables.savefileas,
+            filetypes=((variables.textfiles, "*.txt"), (variables.allfiles, "*.*")),
+            initialdir="Saves")
         savedfile = io.open(saveroute, "w")
+        variables.quicksaveroute = saveroute
         waitlist(1)
 
         for i in variables.todotasklist:
@@ -228,11 +283,35 @@ def savetasklist():
         pass
 
 
+def quicksavetasklist():
+    if variables.quicksaveroute == "":
+        savetasklist()
+
+    else:
+        savedfile = io.open(variables.quicksaveroute, "w")
+        variables.quicksaveroute = variables.quicksaveroute
+        waitlist(1)
+
+        for i in variables.todotasklist:
+            savedfile.write(i + "|")
+        savedfile.write("\n")
+        for i in variables.doingtasklist:
+            savedfile.write(i + "|")
+        savedfile.write("\n")
+        for i in variables.donetasklist:
+            savedfile.write(i + "|")
+
+        waitlist(0)
+        savedfile.close()
+
+
 def loadtasklist():
     try:
-        loadroute = filedialog.askopenfilename(title="Open file",
-            filetypes=(("Text files", "*.txt"), ("All files", "*.*")))
+        loadroute = filedialog.askopenfilename(title=variables.openfile,
+            filetypes=((variables.textfiles, "*.txt"), (variables.allfiles, "*.*")),
+            initialdir="Saves")
         loadedfile = io.open(loadroute, "r")
+        variables.quicksaveroute = loadroute
 
         variables.todolistbox.delete(0, variables.todolistbox.size())
         variables.doinglistbox.delete(0, variables.doinglistbox.size())

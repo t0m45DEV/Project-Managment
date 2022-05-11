@@ -1,3 +1,0 @@
-Plano tangente|Regla de la cadena|TFI|Limites|Combinatoria|Numeros enteros|
-
-Continuidad|Curvas y superficies|Geometria en R2 y R3|Conjuntos y relaciones|Induccion|

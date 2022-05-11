@@ -1,0 +1,3 @@
+TFI|Limites|Combinatoria|Numeros enteros|
+Regla de la cadena|
+Continuidad|Curvas y superficies|Geometria en R2 y R3|Conjuntos y relaciones|Induccion|Plano tangente|

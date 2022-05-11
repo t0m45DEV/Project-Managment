@@ -4,18 +4,37 @@ languagemenu = ""
 languagetext = "Language"
 espanishtext = "Spanish"
 englishtext  = "English"
+colormenu = ""
+colortext = "Color"
 filemenu = ""
 filetext = "File"
 helpmenu = ""
 helptext = "Help"
 
-savetext  = "Save list as"
-loadtext  = "Load list"
-abouttext = "About"
+colorsnames = ["Blue",
+                "Pink",
+                "Green"]
+
+colors = ["light blue",
+            "pink",
+            "light green"]
+
+windowcolor = "light blue"
+
+quicksaveroute = ""
+
+quicksavetext = "Save"
+savetext      = "Save as"
+loadtext      = "Load"
+abouttext     = "About"
+
+savefileas = "Save as..."
+openfile   = "Open file"
+textfiles  = "Text files"
+allfiles   = "All files"
 
 windowmenu  = ""
 windowtitle = "Projectbot"
-windowcolor = "light blue"
 
 padx = 10
 pady = 10
@@ -48,3 +67,4 @@ error01 = ["Error 01", "You cant create an empty task"]
 error02 = ["Error 02", "There was an error loading the language"]
 error03 = ["Error 03", "You must select a task"]
 error04 = ["Error 04", "There was an error moving the task"]
+error05 = ["Error 05", "You cant use those characters"]
