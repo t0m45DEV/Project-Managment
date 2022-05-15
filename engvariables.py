@@ -1,3 +1,9 @@
+# English variables
+
+# ----------------------------
+# ----- Menu and buttons -----
+# ----------------------------
+
 root = ""
 
 languagemenu = ""
@@ -39,6 +45,11 @@ windowtitle = "Projectbot"
 padx = 10
 pady = 10
 
+
+# ------------------------------
+# ----- Function variables -----
+# ------------------------------
+
 todobutton  = ""
 doingbutton = ""
 donebutton  = ""
@@ -47,6 +58,10 @@ todolistbox  = ""
 doinglistbox = ""
 donelistbox  = ""
 
+todotasklist  = []
+doingtasklist = []
+donetasklist  = []
+
 entrybutton = ""
 entrytext   = ""
 erasebutton = ""
@@ -54,14 +69,15 @@ erasetext   = "Erase selected task"
 movebutton  = ""
 movetext    = "Move selected task"
 
+
+# -----------------------
+# ----- Large texts -----
+# -----------------------
+
 listsnames = ["Things to do", "Tasks doing", "Already done"]
 
 aboutinfo = ["About Projectbot",
     "Made by: t0m45DEV\nUsing: Python\nVersion: 3.2"]
-
-todotasklist  = []
-doingtasklist = []
-donetasklist  = []
 
 error01 = ["Error 01", "You cant create an empty task"]
 error02 = ["Error 02", "There was an error loading the language"]
