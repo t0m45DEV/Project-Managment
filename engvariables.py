@@ -17,15 +17,9 @@ filetext = "File"
 helpmenu = ""
 helptext = "Help"
 
-colorsnames = ["Blue",
-                "Pink",
-                "Green"]
+changebackground = "Background"
 
-colors = ["light blue",
-            "pink",
-            "light green"]
-
-windowcolor = "light blue"
+windowcolor = ""
 
 quicksaveroute = ""
 

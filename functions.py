@@ -6,6 +6,8 @@
 # -- Here we call some of the libraries we'll need --
 # ---------------------------------------------------
 
+# A color palette window
+from tkinter import colorchooser
 # Messagebox create the pop-up windows
 from tkinter import messagebox
 # This will help us with the saving and loading txt files
@@ -44,7 +46,7 @@ def init():
     createlistboxes()
     createbuttons()
 
-    # Finally, this is the mainloop of tkinter
+    # Finally, this is the tkinter mainloop
     variables.root.mainloop()
 
 
@@ -69,19 +71,15 @@ def windowmenu():
 
     # This are the theme or color section
     variables.colormenu = tk.Menu(variables.windowmenu, tearoff=0)
-    variables.colormenu.add_command(label=variables.colorsnames[0],
-        command=lambda:changecolor(variables.colors[0]))
-    variables.colormenu.add_command(label=variables.colorsnames[1],
-        command=lambda:changecolor(variables.colors[1]))
-    variables.colormenu.add_command(label=variables.colorsnames[2],
-        command=lambda:changecolor(variables.colors[2]))
+    variables.colormenu.add_command(label=variables.changebackground,
+        command=lambda:changecolor(colorchooser.askcolor()[1]))
 
     # Language section
     variables.languagemenu = tk.Menu(variables.windowmenu, tearoff=0)
     variables.languagemenu.add_command(label=variables.espanishtext,
-        command=lambda:changelanguage("español"))
+        command=lambda:changelanguage("esp"))
     variables.languagemenu.add_command(label=variables.englishtext,
-        command=lambda:changelanguage("english"))
+        command=lambda:changelanguage("eng"))
 
     # Help and info section
     variables.helpmenu = tk.Menu(variables.windowmenu, tearoff=0)
@@ -405,10 +403,10 @@ def chooselanguage(language):
     language = language[0].replace("\n", "")
     predeterminatelanguage(language)
 
-    if language == "español":
+    if "esp" in language:
         import espvariables as variables
 
-    elif language == "english":
+    elif "eng" in language:
         import engvariables as variables
 
     else:
@@ -453,26 +451,29 @@ def changecolor(color):
     if predeterminatecolor(color) == 0:
         pass
     else:
-        variables.root.destroy()
-        init()
+       variables.root.config(bg=color)
 
 
 # Same logic as predeterminatelanguage()
 def predeterminatecolor(color):
 
-    bydefault = io.open("Defaults/color.txt", "r+")
-    readedbydefault = bydefault.read()
-
-    if color in readedbydefault:
-        return 0
+    if color == None:
+        pass
 
     else:
-        bydefault.seek(0)
-        bydefault.truncate(0)
-        bydefault.write(color)
-        return 1
+        bydefault = io.open("Defaults/color.txt", "r+")
+        readedbydefault = bydefault.read()
 
-    bydefault.close()
+        if (color in readedbydefault):
+            return 0
+
+        else:
+            bydefault.seek(0)
+            bydefault.truncate(0)
+            bydefault.write(color)
+            return 1
+
+        bydefault.close()
 
 
 # This creates the about window, pretty simple function
